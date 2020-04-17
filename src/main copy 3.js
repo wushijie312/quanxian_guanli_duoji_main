@@ -21,7 +21,7 @@ let menuDatas = {
 
 const formatRoutes = function (routes, routeData) {
   let lists = digui(routes, routeData.children);
-  routeData.children = lists;
+  routeData.children  = lists;
   return routeData;
 };
 function digui(routes, child) {
@@ -40,19 +40,23 @@ function digui(routes, child) {
   }
   return child;
 }
-const routeData = formatRoutes(menuDatas.result, menus.menus);
+router.beforeEach((to, from, next) => {
+  const routeData = formatRoutes(menuDatas.result, menus.menus);
+  // var getRouter = resourceApp.router.concat(routeData);
+  router.options.routes.push(routeData);
+  router.addRoutes([routeData]);
+  console.log(router);
 
+  next();
+})
 new Vue({
   router,
   store,
   render: h => h(App),
-  created() {
-    // let islogin = localStorage.getItem('islogin');
-    // if (!islogin) {
-    //   return this.$router.push({ path: '/login' });
+  created(){
+    // let islogin=localStorage.getItem('islogin');
+    // if(!islogin){
+    //   return this.$router.push({path:'/login'});
     // }
-    this.$router.options.routes.push(routeData);
-    this.$router.addRoutes([routeData]);
-    console.log(this.$router);
   }
 }).$mount('#app')
